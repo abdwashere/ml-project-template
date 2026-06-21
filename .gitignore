@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+.vscode/
+
+# Data and models — usually too large / sensitive for git
+data/
+models/
+
+# MLflow local tracking
+mlruns/
+
+# Monitoring logs (generated at runtime, not source)
+monitoring/predictions.json
+
+# Secrets
+.env

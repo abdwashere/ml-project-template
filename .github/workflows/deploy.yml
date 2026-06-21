@@ -1,0 +1,39 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # allows manual trigger from the Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t ${{ github.event.repository.name }}:latest .
+
+      - name: Verify image runs
+        run: |
+          docker run -d -p 8000:8000 --name test-container ${{ github.event.repository.name }}:latest
+          sleep 5
+          curl -f http://localhost:8000/health || (docker logs test-container && exit 1)
+          docker stop test-container
+
+      # ============================================================
+      # Add your actual deployment step below, depending on target:
+      #
+      # For HuggingFace Spaces:
+      #   - push the repo to the Space's git remote
+      #
+      # For a Docker registry (Docker Hub / GHCR):
+      #   - docker login
+      #   - docker push
+      #
+      # For AWS (EC2/ECS):
+      #   - configure AWS credentials (use repo secrets)
+      #   - push image / trigger deployment
+      # ============================================================

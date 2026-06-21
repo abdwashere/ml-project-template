@@ -1,0 +1,42 @@
+# ============================================================
+# Project configuration
+# This is one of the only 2 files you need to edit to use
+# this template. The other is src/model.py
+# ============================================================
+
+project:
+  name: "my-ml-project"
+  description: "Replace this with what your model does"
+
+data:
+  # Path to your training data
+  train_path: "data/train.csv"
+  test_size: 0.2
+  random_state: 42
+
+model:
+  # Used for logging/display purposes only — doesn't change behavior
+  type: "sklearn"          # sklearn | pytorch | xgboost
+  save_path: "models/model.pkl"
+
+training:
+  # Add/remove hyperparameters as needed for your model.
+  # These get logged to MLflow automatically — no extra code needed.
+  hyperparameters:
+    n_estimators: 100
+    max_depth: 10
+    learning_rate: 0.1
+  epochs: 10            # only relevant for pytorch models, ignored otherwise
+
+mlflow:
+  experiment_name: "my-ml-project"
+  tracking_uri: "mlruns"   # local by default, point to a remote server if you have one
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+
+monitoring:
+  log_file: "monitoring/predictions.json"
+  retrain_threshold: 0.7   # if avg confidence/accuracy drops below this, flag for retraining
+  min_predictions_for_check: 20
