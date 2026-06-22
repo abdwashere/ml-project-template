@@ -27,11 +27,5 @@ jobs:
       - name: Run tests
         run: pytest tests/ -v
 
-      - name: Check API starts without errors
-        run: |
-          python -c "
-          import sys
-          sys.path.insert(0, '.')
-          from api.main import app
-          print('API imports successfully')
-          "d
+      - name: Check API imports
+        run: PYTHONPATH=. python -c "from api.main import app; print('API imports successfully')"
